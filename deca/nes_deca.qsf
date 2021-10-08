@@ -55,9 +55,13 @@ set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_NEAR_END_VMEAS "HALF VCCIO" -fall
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -rise
 set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -fall
-
 #set_global_assignment -name SEED 3
+set_global_assignment -name GENERATE_SVF_FILE ON
 
+# disable config pin so bank8 can use 1.2V 
+set_global_assignment -name AUTO_RESTART_CONFIGURATION OFF
+set_global_assignment -name ENABLE_CONFIGURATION_PINS OFF
+set_global_assignment -name ENABLE_BOOT_SEL_PIN OFF
 
 ###################################
 ######    PIN ASSIGNMENTS    ######
@@ -65,6 +69,7 @@ set_global_assignment -name OUTPUT_IO_TIMING_FAR_END_VMEAS "HALF SIGNAL SWING" -
 
 # clock
 set_location_assignment PIN_M8 -to max10_clk1_50
+set_instance_assignment -name IO_STANDARD "2.5 V" -to clock_50_i
 
 # key0 reset
 set_location_assignment PIN_H21 -to key0
@@ -81,6 +86,15 @@ set_location_assignment PIN_C4 -to led[4]
 set_location_assignment PIN_A5 -to led[5]
 set_location_assignment PIN_B4 -to led[6]
 set_location_assignment PIN_C5 -to led[7]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[0]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[1]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[2]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[3]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[4]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[5]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[6]
+set_instance_assignment -name IO_STANDARD "1.2 V" -to led[7]
+
 
 # PS2 keyboard input  # Teclado (P9:11,12 GPIO1_D0/1) 
 set_location_assignment PIN_Y5 -to ps2_clk_io
@@ -101,10 +115,50 @@ set_location_assignment PIN_AA7 -to vga_r_o[2]
 set_location_assignment PIN_W6 -to vga_vsync_n_o
 set_location_assignment PIN_W7 -to vga_hsync_n_o
 
-# Audio pwm output (P9:29,30 GPIO1_D18/19) 
+
+# Audio pwm output (P8:5,6 GPIO0_D02/03) and ear
 #(Atlas board: T12_left 1, 2 gnd, 3 R11_right)
-set_location_assignment PIN_R9 -to dac_l_o
-set_location_assignment PIN_W4 -to dac_r_o
+set_location_assignment PIN_Y19 -to dac_l_o
+set_location_assignment PIN_AA17 -to dac_r_o
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dac_l_o
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dac_r_o
+#set_location_assignment PIN_H4 -to ear_i
+
+
+# Joysticks
+#Lo de los Joyticks os funcionará si lo poneis a uno porque lleva lógica negativa.
+#Configurar pines Joy en la FPGA con pull-up, así que 1 es no pulsado y 0 es pulsado
+#2,5V -to (DB9-5)
+#GND -to (DB9-8)
+set_location_assignment PIN_J4 -to ejoy1_p9_i
+set_location_assignment PIN_H3 -to ejoy1_p6_i
+set_location_assignment PIN_J8 -to ejoy1_up_i
+set_location_assignment PIN_J9 -to ejoy1_down_i
+set_location_assignment PIN_F4 -to ejoy1_left_i
+set_location_assignment PIN_F5 -to ejoy1_right_i
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoy1_p9_i
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoy1_p6_i
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoy1_up_i
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoy1_down_i
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoy1_left_i
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoy1_right_i
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ejoy1_p9_i
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ejoy1_p6_i
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ejoy1_up_i
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ejoy1_down_i
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ejoy1_left_i
+set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ejoy1_right_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoy1_up_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoy1_down_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoy1_left_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoy1_p6_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoy1_p9_i
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoy1_right_i
+# joystick select pin 
+set_location_assignment PIN_K5 -to ejoyX_p7_o
+set_instance_assignment -name IO_STANDARD "2.5 V" -to ejoyX_p7_o
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to ejoyX_p7_o
+
 
 # MicroSD Card
 set_location_assignment PIN_T20 -to sd_sclk_o
@@ -261,8 +315,6 @@ set_location_assignment PIN_AB16 -to SDRAM_DQ[13]
 set_location_assignment PIN_V15 -to SDRAM_DQ[14]
 set_location_assignment PIN_W17 -to SDRAM_DQ[15]
 
-# CKE not connected on XS 2.2/2.4.
-set_location_assignment PIN_AA16 -to SDRAM_CKE
 set_location_assignment PIN_AA14 -to SDRAM_CLK
 set_location_assignment PIN_W12 -to SDRAM_nCAS
 set_location_assignment PIN_W11 -to SDRAM_nRAS
@@ -272,10 +324,54 @@ set_location_assignment PIN_V12 -to SDRAM_nCS
 set_location_assignment PIN_V11 -to SDRAM_BA[0]
 set_location_assignment PIN_V13 -to SDRAM_BA[1]
 
+# CKE not connected on XS 2.2/2.4.
+set_location_assignment PIN_AA16 -to SDRAM_CKE
 # DQML/DQMH not connected on XS 2.2/2.4
-set_location_assignment PIN_Y11 -to SDRAM_DQML
 set_location_assignment PIN_W13 -to SDRAM_DQMH
+set_location_assignment PIN_Y11 -to SDRAM_DQML
 ###
+
+
+# SDRAM set_instance_assignment
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[12]
+set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to SDRAM_A[11]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[10]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[9]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[8]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[7]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[6]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[5]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[4]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[3]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[2]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_A[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[15]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[14]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[13]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[12]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[11]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[10]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[9]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[8]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[7]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[6]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[5]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[4]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[3]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[2]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_BA[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_BA[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQMH[1]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQML[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_CKE
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_nCAS
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_nRAS
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_nWE
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_nCS
+#set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_CLK
 
 set_instance_assignment -name FAST_OUTPUT_ENABLE_REGISTER ON -to SDRAM_DQ[0]
 set_instance_assignment -name FAST_OUTPUT_ENABLE_REGISTER ON -to SDRAM_DQ[1]
@@ -322,6 +418,9 @@ set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQ[12]
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQ[13]
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQ[14]
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQ[15]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_BA[1]
+set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_BA[0]
+#set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_nCS
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQML
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_DQMH
 set_instance_assignment -name FAST_OUTPUT_REGISTER ON -to SDRAM_nRAS

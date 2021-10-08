@@ -17,13 +17,13 @@
 // v4.7  Clock_vga at 26.75 MHz outputs hdmi 640x480 but with flickering. It does not start OSD anyway
 //		 Activaded dipswitches[2] but then no video output in both vga & hdmi
 //		 Code cleanup
-// v4.8  shifted sample >>2 to reduce volume
+// v4.8  shifted sample >>2 to reduce volume   -->   CANCELLED ON v5.0
 //		 added SIGNALTAP to check signals
 //		 reset_nes = 1 until first loaded rom because of !loader_done, changed reset of HDMI initialization to key0
 //		 HDMI output now works after bootup
 // v4.9  SignalTap disabled in qsf file
 // 	     SDRAM clkref syncronization signal enabled in sdram.v (haven't seen any benefit of it yet)
-//			
+// v5.0  Added megadrive joystick support. qsf file revised. Added pinout diagram			
 //
 // ---------------------------------------------------------------------------
 // fpganes DE10-Lite port by Dar (darfpga@aol.fr) (http://darfpga.blogspot.fr)
@@ -132,6 +132,15 @@ module nes_deca
 	output wire	dac_l_o	= 1'b0,
 	output wire	dac_r_o	= 1'b0,
 
+	// Joystick
+	input wire ejoy1_p9_i,
+	input wire ejoy1_p6_i,
+	input wire ejoy1_up_i,
+	input wire ejoy1_down_i,
+	input wire ejoy1_left_i,
+	input wire ejoy1_right_i,
+	output wire ejoyX_p7_o,
+
 	// Audio DAC DECA
 	output wire i2sMck,			//AUDIO_MCLK
 	output wire i2sSck,			//AUDIO_BCLK
@@ -219,13 +228,16 @@ kbd_joystick joystick (
 	.joyHBCPPFRLDU(joyHBCPPFRLDU),
 	.keys_HUA(keys_HUA)
 );
-  
-wire	joy1_up_i    = ~joyHBCPPFRLDU[0]; // arrow up
-wire	joy1_down_i  = ~joyHBCPPFRLDU[1]; // arrow down
-wire	joy1_left_i  = ~joyHBCPPFRLDU[2]; // arrow left
-wire	joy1_right_i = ~joyHBCPPFRLDU[3]; // arrow right
-wire	joy1_p6_i    = ~joyHBCPPFRLDU[4]; // space
-wire	joy1_p9_i    = ~joyHBCPPFRLDU[8]; // ctrl
+
+assign ejoyX_p7_o = 1'b1;
+
+wire	joy1_up_i    = ~joyHBCPPFRLDU[0] & ejoy1_up_i; // arrow up
+wire	joy1_down_i  = ~joyHBCPPFRLDU[1] & ejoy1_down_i; // arrow down
+wire	joy1_left_i  = ~joyHBCPPFRLDU[2] & ejoy1_left_i; // arrow left
+wire	joy1_right_i = ~joyHBCPPFRLDU[3] & ejoy1_right_i; // arrow right
+wire	joy1_p6_i    = ~joyHBCPPFRLDU[4] & ejoy1_p6_i; // space
+wire	joy1_p9_i    = ~joyHBCPPFRLDU[8] & ejoy1_p9_i; // ctrl
+
 wire	joy2_up_i    = 1'b1;
 wire	joy2_down_i  = 1'b1;
 wire	joy2_left_i  = 1'b1;
@@ -592,9 +604,9 @@ i2s_transmitter
 )
 i2s_transmitter_dut (
 	.clock_i 	 (max10_clk1_50 ),
-	.reset_i 	 (reset_nes ),
-	.pcm_l_i 	 (sample >> 2 ),		// each right displacement reduces volume to half
-	.pcm_r_i 	 (sample >> 2 ),
+	.reset_i 	 (reset_nes ), 
+	.pcm_l_i 	 ( {1'b0, sample[15:1]} ),		//sample >> 1 //each right displacement reduces volume to half
+	.pcm_r_i 	 ( {1'b0, sample[15:1]} ), 		//not working {~sample[15], sample[14:0]}
 	.i2s_mclk_o  (i2sMck ),
 	.i2s_lrclk_o (i2sLr ),
 	.i2s_bclk_o  (i2sSck ),

@@ -67,7 +67,7 @@ module sdram		// adapted from NES Mister port
 assign SDRAM_nCS = 0;
 assign {SDRAM_DQMH,SDRAM_DQML} = SDRAM_A[12:11];
 
-localparam RASCAS_DELAY   = 3'd2; // tRCD=20ns -> 2 cycles@85MHz    (whith 1 from Mister port it is very foggy the video output)
+localparam RASCAS_DELAY   = 3'd2; // tRCD=20ns -> 2 cycles@85MHz    (with 1 from Mister port it is very foggy the video output)
 localparam BURST_LENGTH   = 3'd0; // 0=1, 1=2, 2=4, 3=8, 7=full page
 localparam ACCESS_TYPE    = 1'd0; // 0=sequential, 1=interleaved
 localparam CAS_LATENCY    = 3'd2; // 2/3 allowed
