@@ -24,6 +24,7 @@
 // v4.9  SignalTap disabled in qsf file
 // 	     SDRAM clkref syncronization signal enabled in sdram.v (haven't seen any benefit of it yet)
 // v5.0  Added megadrive joystick support. qsf file revised. Added pinout diagram			
+// v5.1  Changed I2S tranmitter for audio_i2s.vhd. It works well for codec & hdmi
 //
 // ---------------------------------------------------------------------------
 // fpganes DE10-Lite port by Dar (darfpga@aol.fr) (http://darfpga.blogspot.fr)
@@ -597,21 +598,35 @@ AUDIO_SPI_CTL_RD u1 (
 );
     
 // I2S interface audio
-i2s_transmitter 
-#(
-	//.mclk_rate( 21428571 ),
-	.sample_rate( 48000 )	
-)
-i2s_transmitter_dut (
-	.clock_i 	 (max10_clk1_50 ),
-	.reset_i 	 (reset_nes ), 
-	.pcm_l_i 	 ( {1'b0, sample[15:1]} ),		//sample >> 1 //each right displacement reduces volume to half
-	.pcm_r_i 	 ( {1'b0, sample[15:1]} ), 		//not working {~sample[15], sample[14:0]}
-	.i2s_mclk_o  (i2sMck ),
-	.i2s_lrclk_o (i2sLr ),
-	.i2s_bclk_o  (i2sSck ),
-	.i2s_d_o     (i2sD )
-);
+// i2s_transmitter 
+// #(
+// 	//.mclk_rate( 21428571 ),
+// 	.sample_rate( 48000 ),
+// 	.preamble ( 1 )	
+// )
+// i2s_transmitter_dut (
+// 	.clock_i 	 (max10_clk1_50 ),
+// 	.reset_i 	 (reset_nes ), 
+// 	// .pcm_l_i 	 ( {1'b0, sample[15:1]} ),		//sample >> 1 //each right displacement reduces volume to half
+// 	// .pcm_r_i 	 ( {1'b0, sample[15:1]} ), 		//not working {~sample[15], sample[14:0]}
+// 	.pcm_l_i 	 ( sample ),		
+// 	.pcm_r_i 	 ( sample ), 		
+// 	.i2s_mclk_o  (i2sMck ),
+// 	.i2s_lrclk_o (i2sLr ),
+// 	.i2s_bclk_o  (i2sSck ),
+// 	.i2s_d_o     (i2sD )
+// );
+
+audio_top audio_i2s_inst (
+	.clk_50MHz (max10_clk1_50) ,
+	.dac_MCLK  (i2sMck) ,
+	.dac_LRCK  (i2sLr) ,
+	.dac_SCLK  (i2sSck) ,
+	.dac_SDIN  (i2sD) ,
+	.L_data    (sample) ,
+	.R_data    (sample) 
+);		
+
 
 ///////////////////////////////// End of Deca HDMI & Audio
 

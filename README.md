@@ -18,7 +18,7 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 
 **Versions**:
 
-- current version: 5.0
+- current version: 5.1
 - see changelog in top level file deca/nes_deca.sv
 
 **Compiling:**
