@@ -5,7 +5,7 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 **Features:**
 
 * HDMI video output
-* VGA video output is possible through GPIO (see pinout below)
+* VGA video output is available through GPIO (see pinout below). Tested with PS2 & R2R VGA adapter (333)  https://www.waveshare.com/vga-ps2-board.htm
 * Line out (3.5 jack green connector) and HDMI audio output
 * PWM audio is available through GPIO (see pinout below)
 * Joystick available through GPIO  (see pinout below).  **Joystick power pin must be 2.5 V**
@@ -17,7 +17,7 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 - SDRAM module. Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca)).
 - PS/2 Keyboard connected to GPIO  (see pinout below)
 
-- **Versions**:
+**Versions**:
 
 - current version: 5.1
 - see changelog in top level file deca/nes_deca.sv
@@ -43,7 +43,6 @@ Mouse pinout is not used in this core.
 
 * HDMI video outputs special resolution, so does not work in all monitors.
 
-  
 
 ### Keyboard control 
 
@@ -53,8 +52,6 @@ Mouse pinout is not used in this core.
 - space : A
 - ctrl  : B
 - arrow up, down, left, right : move
-
-
 
 ### Changing how the core works
 
