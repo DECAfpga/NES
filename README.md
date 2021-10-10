@@ -5,18 +5,19 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 **Features:**
 
 * HDMI video output
-* VGA video output is possible through GPIO
-* Line out, HDMI audio output
-* PWM audio is possible through GPIO
-* Joystick 1 available through GPIO .  **Joystick power pin must be 2.5 V**. 
+* VGA video output is possible through GPIO (see pinout below)
+* Line out (3.5 jack green connector) and HDMI audio output
+* PWM audio is available through GPIO (see pinout below)
+* Joystick available through GPIO  (see pinout below).  **Joystick power pin must be 2.5 V**
   * **DANGER: Connecting power pin above 2.6 V may damage the FPGA**
+  * This core is prepared for Megadrive 6 button gamepads as it outputs a permanent high level on pin 7 of DB9
 
 **Additional hardware required**:
 
 - SDRAM module. Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca)).
-- PS/2 Keyboard connected to GPIO. See connections below
+- PS/2 Keyboard connected to GPIO  (see pinout below)
 
-**Versions**:
+- **Versions**:
 
 - current version: 5.1
 - see changelog in top level file deca/nes_deca.sv
@@ -30,7 +31,7 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 
 ![pinout_deca](pinout_deca.png)
 
-mouse pinout is not used in this core.
+Mouse pinout is not used in this core.
 
 **Others:**
 
