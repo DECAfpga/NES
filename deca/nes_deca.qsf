@@ -103,18 +103,21 @@ set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ps2_clk_io
 set_instance_assignment -name WEAK_PULL_UP_RESISTOR ON -to ps2_data_io
 
 # VGA video output
-set_location_assignment PIN_V10 -to vga_b_o[0]
-set_location_assignment PIN_AA6 -to vga_b_o[1]
-set_location_assignment PIN_AB6 -to vga_b_o[2]
-set_location_assignment PIN_AB7 -to vga_g_o[0]
-set_location_assignment PIN_R11 -to vga_g_o[1]
-set_location_assignment PIN_V7 -to vga_g_o[2]
-set_location_assignment PIN_U7 -to vga_r_o[0]
-set_location_assignment PIN_Y7 -to vga_r_o[1]
-set_location_assignment PIN_AA7 -to vga_r_o[2]
-set_location_assignment PIN_W6 -to vga_vsync_n_o
-set_location_assignment PIN_W7 -to vga_hsync_n_o
-
+set_location_assignment PIN_V10 -to vga_b_o[1]
+set_location_assignment PIN_AA6 -to vga_b_o[2]
+set_location_assignment PIN_AB6 -to vga_b_o[3]
+set_location_assignment PIN_AB7 -to vga_g_o[1]
+set_location_assignment PIN_R11 -to vga_g_o[2]
+set_location_assignment PIN_V7  -to vga_g_o[3]
+set_location_assignment PIN_U7  -to vga_r_o[1]
+set_location_assignment PIN_Y7  -to vga_r_o[2]
+set_location_assignment PIN_AA7 -to vga_r_o[3]
+set_location_assignment PIN_W6  -to vga_vsync_n_o
+set_location_assignment PIN_W7  -to vga_hsync_n_o
+#Additional pins for a 444 addon like Digilent Pmod vga 
+set_location_assignment PIN_V8  -to vga_r[0]
+set_location_assignment PIN_AB8 -to vga_g[0]
+set_location_assignment PIN_W8  -to vga_b[0]
 
 # Audio pwm output (P8:5,6 GPIO0_D02/03) and ear
 #(Atlas board: T12_left 1, 2 gnd, 3 R11_right)

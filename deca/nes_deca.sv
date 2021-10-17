@@ -25,6 +25,7 @@
 // 	     SDRAM clkref syncronization signal enabled in sdram.v (haven't seen any benefit of it yet)
 // v5.0  Added megadrive joystick support. qsf file revised. Added pinout diagram			
 // v5.1  Changed I2S tranmitter for audio_i2s.vhd. It works well for codec & hdmi
+// v5.2  VGA444 pinout, button 1 & 2 joystick inverted.
 //
 // ---------------------------------------------------------------------------
 // fpganes DE10-Lite port by Dar (darfpga@aol.fr) (http://darfpga.blogspot.fr)
@@ -156,9 +157,9 @@ module nes_deca
 	output wire AUDIO_SPI_SELECT,
 
 	// VGA
-	output wire	[2:0] vga_r_o,
-	output wire	[2:0] vga_g_o,
-	output wire	[2:0] vga_b_o,
+	output wire	[3:0] vga_r_o,
+	output wire	[3:0] vga_g_o,
+	output wire	[3:0] vga_b_o,
 	output wire	vga_hsync_n_o,
 	output wire	vga_vsync_n_o, 
 
@@ -236,8 +237,8 @@ wire	joy1_up_i    = ~joyHBCPPFRLDU[0] & ejoy1_up_i; // arrow up
 wire	joy1_down_i  = ~joyHBCPPFRLDU[1] & ejoy1_down_i; // arrow down
 wire	joy1_left_i  = ~joyHBCPPFRLDU[2] & ejoy1_left_i; // arrow left
 wire	joy1_right_i = ~joyHBCPPFRLDU[3] & ejoy1_right_i; // arrow right
-wire	joy1_p6_i    = ~joyHBCPPFRLDU[4] & ejoy1_p6_i; // space
-wire	joy1_p9_i    = ~joyHBCPPFRLDU[8] & ejoy1_p9_i; // ctrl
+wire	joy1_p9_i    = ~joyHBCPPFRLDU[4] & ejoy1_p6_i; // space
+wire	joy1_p6_i    = ~joyHBCPPFRLDU[8] & ejoy1_p9_i; // ctrl
 
 wire	joy2_up_i    = 1'b1;
 wire	joy2_down_i  = 1'b1;
@@ -527,9 +528,9 @@ OSD_Overlay osd (
 	.scanline_ena(scanlines)
 );
 
-assign vga_r_o = vga_osd_r[7:5]; 
-assign vga_g_o = vga_osd_g[7:5]; 
-assign vga_b_o = vga_osd_b[7:5]; 
+assign vga_r_o = vga_osd_r[7:4]; 
+assign vga_g_o = vga_osd_g[7:4]; 
+assign vga_b_o = vga_osd_b[7:4]; 
 	
 
 /////////////////////////////////
