@@ -2,11 +2,12 @@
 
 DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (https://sourceforge.net/projects/darfpga/files/Software%20VHDL/nes/)
 
+**Now compatible with [Deca Retro Cape 2](https://github.com/somhi/DECA_retro_cape_2)** (new location for 3 pins of old SDRAM modules). Otherwise see pinout below to connect everything through GPIOs.
+
 **Features:**
 
 * HDMI video output
 * VGA 444 video output is available through GPIO (see pinout below). 
-  * Tested with PS2 & R2R VGA adapter (333)  https://www.waveshare.com/vga-ps2-board.htm
 * Line out (3.5 jack green connector) and HDMI audio output
 * PWM audio is available through GPIO (see pinout below)
 * Joystick available through GPIO  (see pinout below).  **Joystick power pin must be 2.5 V**
@@ -32,7 +33,7 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 
 ![pinout_deca](pinout_deca.png)
 
-Mouse pinout is not used in this core.
+Mouse, UART and MIDI pins are not used in this core.
 
 **Others:**
 

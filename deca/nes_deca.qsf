@@ -108,21 +108,21 @@ set_location_assignment PIN_AA6 -to vga_b_o[2]
 set_location_assignment PIN_AB6 -to vga_b_o[3]
 set_location_assignment PIN_AB7 -to vga_g_o[1]
 set_location_assignment PIN_R11 -to vga_g_o[2]
-set_location_assignment PIN_V7  -to vga_g_o[3]
-set_location_assignment PIN_U7  -to vga_r_o[1]
-set_location_assignment PIN_Y7  -to vga_r_o[2]
+set_location_assignment PIN_V7 -to vga_g_o[3]
+set_location_assignment PIN_U7 -to vga_r_o[1]
+set_location_assignment PIN_Y7 -to vga_r_o[2]
 set_location_assignment PIN_AA7 -to vga_r_o[3]
-set_location_assignment PIN_W6  -to vga_vsync_n_o
-set_location_assignment PIN_W7  -to vga_hsync_n_o
+set_location_assignment PIN_W6 -to vga_vsync_n_o
+set_location_assignment PIN_W7 -to vga_hsync_n_o
 #Additional pins for a 444 addon like Digilent Pmod vga 
-set_location_assignment PIN_V8  -to vga_r[0]
+set_location_assignment PIN_V8 -to vga_r[0]
 set_location_assignment PIN_AB8 -to vga_g[0]
-set_location_assignment PIN_W8  -to vga_b[0]
+set_location_assignment PIN_W8 -to vga_b[0]
 
 # Audio pwm output (P8:5,6 GPIO0_D02/03) and ear
 #(Atlas board: T12_left 1, 2 gnd, 3 R11_right)
-set_location_assignment PIN_Y19 -to dac_l_o
-set_location_assignment PIN_AA17 -to dac_r_o
+set_location_assignment PIN_V17 -to dac_l_o
+set_location_assignment PIN_Y11 -to dac_r_o
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dac_l_o
 set_instance_assignment -name CURRENT_STRENGTH_NEW "MAXIMUM CURRENT" -to dac_r_o
 #set_location_assignment PIN_H4 -to ear_i
@@ -327,11 +327,10 @@ set_location_assignment PIN_V12 -to SDRAM_nCS
 set_location_assignment PIN_V11 -to SDRAM_BA[0]
 set_location_assignment PIN_V13 -to SDRAM_BA[1]
 
-# CKE not connected on XS 2.2/2.4.
-set_location_assignment PIN_AA16 -to SDRAM_CKE
-# DQML/DQMH not connected on XS 2.2/2.4
-set_location_assignment PIN_W13 -to SDRAM_DQMH
-set_location_assignment PIN_Y11 -to SDRAM_DQML
+# CKE and DQML/DQMH not connected on XS 2.2/2.4
+set_location_assignment PIN_W13 -to SDRAM_CKE
+set_location_assignment PIN_AB17 -to SDRAM_DQML
+set_location_assignment PIN_AA16 -to SDRAM_DQMH
 ###
 
 
@@ -367,8 +366,8 @@ set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[1]
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQ[0]
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_BA[1]
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_BA[0]
-set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQMH[1]
-set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQML[0]
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQMH
+set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_DQML
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_CKE
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_nCAS
 set_instance_assignment -name CURRENT_STRENGTH_NEW 4MA -to SDRAM_nRAS
@@ -531,6 +530,7 @@ set_global_assignment -name VERILOG_FILE rtl_deca/hdmi/I2C_HDMI_Config.v
 set_global_assignment -name PARTITION_NETLIST_TYPE SOURCE -section_id Top
 set_global_assignment -name PARTITION_FITTER_PRESERVATION_LEVEL PLACEMENT_AND_ROUTING -section_id Top
 set_global_assignment -name PARTITION_COLOR 16764057 -section_id Top
+
 
 
 set_instance_assignment -name PARTITION_HIERARCHY root_partition -to | -section_id Top
