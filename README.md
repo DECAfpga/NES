@@ -16,7 +16,10 @@ DECA Top level for NES by Somhic (16/07/21) adapted from DE10_lite port by Dar (
 
 **Additional hardware required**:
 
-- SDRAM module. Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2 ([see connections](https://github.com/SoCFPGA-learning/DECA/tree/main/Projects/sdram_mister_deca)).
+- SDRAM module
+
+  - Tested with 32 MB SDRAM board for MiSTer (extra slim) XS_2.2
+  - Tested with a dual memory module v1.3 with 3 pins
 - PS/2 Keyboard connected to GPIO  (see pinout below)
 
 **Versions**:
